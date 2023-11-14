@@ -39,7 +39,7 @@ fun ObjectDetectionScreen(
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     Scaffold(topBar = {
-        TopBar(onBackClick = onBackClick, text = "Objects Detection")
+        TopBar(onBackClick = onBackClick, text = "Objects detection")
     }, content = {
         Column(
             modifier = Modifier

@@ -39,7 +39,7 @@ fun ImageLabelingScreen(
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     Scaffold(topBar = {
-        TopBar(onBackClick = onBackClick, text = "Image Labeling")
+        TopBar(onBackClick = onBackClick, text = "Image labeling")
     }, content = {
         Column(
             modifier = Modifier

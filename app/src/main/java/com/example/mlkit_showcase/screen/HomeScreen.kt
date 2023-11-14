@@ -19,6 +19,7 @@ fun HomeScreen(
     onTextRecognitionClick: () -> Unit,
     onObjectDetectionClick: () -> Unit,
     onImageLabelingClick: () -> Unit,
+    onBarcodeScanningClick: () -> Unit,
 ) {
     Column(
     ) {
@@ -39,7 +40,7 @@ fun HomeScreen(
                 shape = RectangleShape,
                 onClick = onTextRecognitionClick
             ) {
-                Text("Text Recognition")
+                Text("Text recognition")
             }
             Button(
                 modifier = Modifier
@@ -48,7 +49,7 @@ fun HomeScreen(
                 shape = RectangleShape,
                 onClick = onObjectDetectionClick
             ) {
-                Text("Objects Detection")
+                Text("Objects detection")
             }
         }
         Row(
@@ -62,6 +63,15 @@ fun HomeScreen(
                 onClick = onImageLabelingClick
             ) {
                 Text("Image labeling")
+            }
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = onBarcodeScanningClick
+            ) {
+                Text("Barcode scanner")
             }
         }
     }
