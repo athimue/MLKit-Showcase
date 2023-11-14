@@ -53,13 +53,13 @@ dependencies {
 
     // Text recognition
     implementation("com.google.mlkit:text-recognition:16.0.0")
+    // Object detection
+    implementation("com.google.mlkit:object-detection:17.0.0")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"
     implementation("androidx.camera:camera-camera2:${camerax_version}")
-    // If you want to additionally use the CameraX Lifecycle library
     implementation("androidx.camera:camera-lifecycle:${camerax_version}")
-    // If you want to additionally use the CameraX View class
     implementation("androidx.camera:camera-view:${camerax_version}")
 
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")

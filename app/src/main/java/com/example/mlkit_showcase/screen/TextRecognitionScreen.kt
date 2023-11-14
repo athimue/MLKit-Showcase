@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mlkit_showcase.analyser.TextRecognitionAnalyser
 import com.example.mlkit_showcase.composable.CameraView
 import com.example.mlkit_showcase.composable.NoPermissionContent
 import com.example.mlkit_showcase.composable.TopBar
@@ -57,7 +58,9 @@ fun TextRecognitionContent(
     Column(
         modifier = modifier.scrollable(scrollState, orientation = Orientation.Vertical)
     ) {
-        CameraView(modifier = modifier.weight(1f), onTextDetected = { textValue.value = it })
+        CameraView(
+            modifier = modifier.weight(1f),
+            imageAnalyser = TextRecognitionAnalyser { textValue.value = it })
         Column(
             modifier = modifier
                 .weight(1f)

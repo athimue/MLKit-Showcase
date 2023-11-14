@@ -47,7 +47,7 @@ fun HomeScreen(
                 shape = RectangleShape,
                 onClick = onObjectDetectionClick
             ) {
-                Text("Object Detection")
+                Text("Objects Detection")
             }
         }
     }

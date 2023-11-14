@@ -12,12 +12,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import com.example.mlkit_showcase.analyser.TextRecognitionAnalyser
 import java.util.concurrent.Executors
 
 @Composable
 fun CameraView(
-    modifier: Modifier = Modifier, onTextDetected: (String) -> Unit
+    modifier: Modifier = Modifier,
+    imageAnalyser: ImageAnalysis.Analyzer,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -42,7 +42,7 @@ fun CameraView(
                     .also { imageAnalysis ->
                         imageAnalysis.setAnalyzer(
                             Executors.newSingleThreadExecutor(),
-                            TextRecognitionAnalyser(onTextDetected)
+                            imageAnalyser
                         )
                     }
 
