@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mlkit_showcase.screen.BarcodeScanningScreen
+import com.example.mlkit_showcase.screen.FaceDetectionScreen
 import com.example.mlkit_showcase.screen.HomeScreen
 import com.example.mlkit_showcase.screen.ImageLabelingScreen
 import com.example.mlkit_showcase.screen.ObjectDetectionScreen
@@ -16,6 +17,7 @@ internal sealed class Screen(val route: String) {
     data object ObjectDetection : Screen("object_detection")
     data object ImageLabeling : Screen("image_labeling")
     data object BarcodeScanning : Screen("barcode_scanning")
+    data object FaceDetection : Screen("face_detection")
 }
 
 @Composable
@@ -28,6 +30,7 @@ fun MainNavigation() {
                 onObjectDetectionClick = { navController.navigate(Screen.ObjectDetection.route) },
                 onImageLabelingClick = { navController.navigate(Screen.ImageLabeling.route) },
                 onBarcodeScanningClick = { navController.navigate(Screen.BarcodeScanning.route) },
+                onFaceDetectionClick = { navController.navigate(Screen.FaceDetection.route) },
             )
         }
         composable(Screen.TextRecognition.route) {
@@ -41,6 +44,9 @@ fun MainNavigation() {
         }
         composable(Screen.BarcodeScanning.route) {
             BarcodeScanningScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.FaceDetection.route) {
+            FaceDetectionScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }

@@ -20,12 +20,15 @@ fun HomeScreen(
     onObjectDetectionClick: () -> Unit,
     onImageLabelingClick: () -> Unit,
     onBarcodeScanningClick: () -> Unit,
+    onFaceDetectionClick: () -> Unit,
 ) {
     Column(
     ) {
         Text(
             text = "ML KIT SHOWCASE",
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
@@ -72,6 +75,28 @@ fun HomeScreen(
                 onClick = onBarcodeScanningClick
             ) {
                 Text("Barcode scanner")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = onFaceDetectionClick
+            ) {
+                Text("Face detection")
+            }
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = {}
+            ) {
+                Text("xxxxxx")
             }
         }
     }
