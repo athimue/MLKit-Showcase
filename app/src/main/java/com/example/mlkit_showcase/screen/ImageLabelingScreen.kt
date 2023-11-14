@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mlkit_showcase.analyser.ObjectRecognitionAnalyser
+import com.example.mlkit_showcase.analyser.ImageLabelingAnalyser
 import com.example.mlkit_showcase.composable.CameraView
 import com.example.mlkit_showcase.composable.NoPermissionContent
 import com.example.mlkit_showcase.composable.TableCell
@@ -30,16 +30,16 @@ import com.example.mlkit_showcase.composable.TopBar
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.mlkit.vision.objects.DetectedObject
+import com.google.mlkit.vision.label.ImageLabel
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ObjectDetectionScreen(
+fun ImageLabelingScreen(
     onBackClick: () -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
     Scaffold(topBar = {
-        TopBar(onBackClick = onBackClick, text = "Objects Detection")
+        TopBar(onBackClick = onBackClick, text = "Image Labeling")
     }, content = {
         Column(
             modifier = Modifier
@@ -47,7 +47,7 @@ fun ObjectDetectionScreen(
                 .fillMaxSize()
         ) {
             if (cameraPermissionState.status.isGranted) {
-                ObjectDetectionContent()
+                ImageLabelingContent()
             } else {
                 NoPermissionContent(onPermissionClick = { cameraPermissionState.launchPermissionRequest() })
             }
@@ -56,13 +56,13 @@ fun ObjectDetectionScreen(
 }
 
 @Composable
-fun ObjectDetectionContent(
+fun ImageLabelingContent(
     modifier: Modifier = Modifier
 ) {
-    var detectedObjects by remember { mutableStateOf(listOf<DetectedObject>()) }
+    var imageLabels by remember { mutableStateOf(listOf<ImageLabel>()) }
     Column {
         CameraView(modifier = modifier.weight(1f),
-            imageAnalyser = ObjectRecognitionAnalyser { detectedObjects = it })
+            imageAnalyser = ImageLabelingAnalyser { imageLabels = it })
         Column(
             modifier = modifier
                 .weight(1f)
@@ -73,13 +73,13 @@ fun ObjectDetectionContent(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(20.dp),
-                text = "Objects detected",
+                text = "Image labeling detected",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 20.sp
             )
             Divider()
-            if (detectedObjects.isNotEmpty()) {
+            if (imageLabels.isNotEmpty()) {
                 LazyColumn {
                     item {
                         Row(
@@ -87,28 +87,25 @@ fun ObjectDetectionContent(
                                 .fillMaxWidth()
                                 .padding(top = 8.dp, start = 8.dp, end = 8.dp)
                         ) {
-                            TableCell(text = "Id", weight = 0.2f)
-                            TableCell(text = "Object", weight = 0.5f)
+                            TableCell(text = "Index", weight = 0.2f)
+                            TableCell(text = "Text", weight = 0.5f)
                             TableCell(text = "Confidence", weight = 0.3f)
                         }
                     }
-                    items(items = detectedObjects) { detectedObject ->
+                    items(items = imageLabels) { imageLabel ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(start = 8.dp, end = 8.dp)
                         ) {
-                            TableCell(text = detectedObject.trackingId.toString(), weight = 0.2f)
+                            TableCell(text = imageLabel.index.toString(), weight = 0.2f)
                             TableCell(
-                                text = detectedObject.labels.joinToString(", ") { label -> label.text },
+                                text = imageLabel.text,
                                 weight = 0.5f
                             )
                             TableCell(
-                                text = detectedObject.labels.joinToString(", ") { label ->
-                                    String.format(
-                                        "%.2f", label.confidence
-                                    )
-                                }, weight = 0.3f
+                                text = String.format("%.2f", imageLabel.confidence),
+                                weight = 0.3f
                             )
                         }
                     }
@@ -118,7 +115,7 @@ fun ObjectDetectionContent(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(top = 15.dp),
-                    text = "No object detected",
+                    text = "No image label",
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp
                 )

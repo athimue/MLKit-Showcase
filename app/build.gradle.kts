@@ -55,6 +55,8 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.0")
     // Object detection
     implementation("com.google.mlkit:object-detection:17.0.0")
+    // Image labeling
+    implementation("com.google.mlkit:image-labeling:17.0.7")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"

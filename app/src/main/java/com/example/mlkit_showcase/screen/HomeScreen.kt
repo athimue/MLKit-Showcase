@@ -17,7 +17,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreen(
     onTextRecognitionClick: () -> Unit,
-    onObjectDetectionClick: () -> Unit
+    onObjectDetectionClick: () -> Unit,
+    onImageLabelingClick: () -> Unit,
 ) {
     Column(
     ) {
@@ -48,6 +49,19 @@ fun HomeScreen(
                 onClick = onObjectDetectionClick
             ) {
                 Text("Objects Detection")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = onImageLabelingClick
+            ) {
+                Text("Image labeling")
             }
         }
     }
