@@ -83,7 +83,7 @@ fun CameraView(
                     lifecycleOwner, cameraSelector.value, preview.value, imageAnalysis.value
                 )
             }) {
-            Text("+")
+            Text("switch")
         }
     }
 }

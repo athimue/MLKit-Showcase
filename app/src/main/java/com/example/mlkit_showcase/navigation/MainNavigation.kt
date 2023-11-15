@@ -9,6 +9,7 @@ import com.example.mlkit_showcase.screen.FaceDetectionScreen
 import com.example.mlkit_showcase.screen.HomeScreen
 import com.example.mlkit_showcase.screen.ImageLabelingScreen
 import com.example.mlkit_showcase.screen.ObjectDetectionScreen
+import com.example.mlkit_showcase.screen.PoseDetectionScreen
 import com.example.mlkit_showcase.screen.TextRecognitionScreen
 
 internal sealed class Screen(val route: String) {
@@ -19,6 +20,7 @@ internal sealed class Screen(val route: String) {
     data object BarcodeScanning : Screen("barcode_scanning")
     data object FaceDetection : Screen("face_detection")
     data object DigitalInkRecognition : Screen("digital_ink_recognition")
+    data object PoseDetection : Screen("pose_detection")
 }
 
 @Composable
@@ -33,6 +35,7 @@ fun MainNavigation() {
                 onBarcodeScanningClick = { navController.navigate(Screen.BarcodeScanning.route) },
                 onFaceDetectionClick = { navController.navigate(Screen.FaceDetection.route) },
                 onDigitalInkRecognitionClick = { navController.navigate(Screen.DigitalInkRecognition.route) },
+                onPoseDetectionClick = { navController.navigate(Screen.PoseDetection.route) }
             )
         }
         composable(Screen.TextRecognition.route) {
@@ -52,6 +55,9 @@ fun MainNavigation() {
         }
         composable(Screen.DigitalInkRecognition.route) {
             FaceDetectionScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.PoseDetection.route) {
+            PoseDetectionScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }
