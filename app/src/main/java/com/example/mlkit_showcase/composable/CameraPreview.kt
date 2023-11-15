@@ -6,10 +6,18 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
@@ -21,36 +29,58 @@ fun CameraView(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
+    val cameraProviderFuture = remember {
+        ProcessCameraProvider.getInstance(context)
+    }
     val cameraProvider = cameraProviderFuture.get()
     val executor = ContextCompat.getMainExecutor(context)
+    val cameraSelector = remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
+    val preview = remember { mutableStateOf<Preview?>(null) }
+    val imageAnalysis = remember { mutableStateOf<ImageAnalysis?>(null) }
 
-    AndroidView(modifier = modifier, factory = {
-        PreviewView(it).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-            scaleType = PreviewView.ScaleType.FIT_CENTER
-        }.also { previewView ->
-            cameraProviderFuture.addListener({
-                val preview = Preview.Builder().build().also { preview ->
+    Box(
+        modifier = modifier
+    ) {
+        AndroidView(modifier = modifier, factory = {
+            PreviewView(it).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+                scaleType = PreviewView.ScaleType.FIT_CENTER
+            }.also { previewView ->
+                preview.value = Preview.Builder().build().also { preview ->
                     preview.setSurfaceProvider(previewView.surfaceProvider)
                 }
-                val imageAnalysis = ImageAnalysis.Builder()
+                imageAnalysis.value = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build()
                     .also { imageAnalysis ->
                         imageAnalysis.setAnalyzer(
-                            Executors.newSingleThreadExecutor(),
-                            imageAnalyser
+                            Executors.newSingleThreadExecutor(), imageAnalyser
                         )
                     }
 
+                cameraProviderFuture.addListener({
+                    cameraProvider.unbindAll()
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner, cameraSelector.value, preview.value, imageAnalysis.value
+                    )
+                }, executor)
+            }
+        })
+        FloatingActionButton(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(12.dp),
+            onClick = {
+                cameraSelector.value =
+                    if (cameraSelector.value == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA else CameraSelector.DEFAULT_BACK_CAMERA
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
-                    lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis
+                    lifecycleOwner, cameraSelector.value, preview.value, imageAnalysis.value
                 )
-            }, executor)
+            }) {
+            Text("+")
         }
-    })
+    }
 }
