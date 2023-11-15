@@ -1,5 +1,6 @@
 package com.example.mlkit_showcase.screen
 
+import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,12 +61,20 @@ fun FaceDetectionContent(
     modifier: Modifier = Modifier
 ) {
     var faces by remember { mutableStateOf(listOf<Face>()) }
+    val imageP = remember { mutableStateOf<ImageProxy?>(null) }
     Column {
-        CameraView(modifier = modifier.weight(1f),
-            imageAnalyser = FaceDetectionAnalyser { faces = it })
+        CameraView(
+            modifier = modifier.weight(0.6f),
+            imageAnalyser = FaceDetectionAnalyser { image, faceList ->
+                faces = faceList
+                imageP.value = image
+            },
+            image = imageP.value,
+            rect = faces.firstOrNull()?.boundingBox
+        )
         Column(
             modifier = modifier
-                .weight(1f)
+                .weight(0.4f)
                 .fillMaxWidth()
                 .padding(top = 10.dp)
         ) {
@@ -87,9 +96,8 @@ fun FaceDetectionContent(
                                 .fillMaxWidth()
                                 .padding(top = 8.dp, start = 8.dp, end = 8.dp)
                         ) {
-                            TableCell(text = "Index", weight = 0.2f)
-                            TableCell(text = "Smiling ?", weight = 0.4f)
-                            TableCell(text = "Eyes open ?", weight = 0.4f)
+                            TableCell(text = "Smiling ?", weight = 0.5f)
+                            TableCell(text = "Eyes open ?", weight = 0.5f)
                         }
                     }
                     items(items = faces) { face ->
@@ -98,14 +106,13 @@ fun FaceDetectionContent(
                                 .fillMaxWidth()
                                 .padding(start = 8.dp, end = 8.dp)
                         ) {
-                            TableCell(text = face.trackingId.toString(), weight = 0.2f)
                             TableCell(
                                 text = face.smilingProbability?.toBigDecimal()
-                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.4f
+                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.5f
                             )
                             TableCell(
                                 text = face.rightEyeOpenProbability?.toBigDecimal()
-                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.4f
+                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.5f
                             )
                         }
                     }

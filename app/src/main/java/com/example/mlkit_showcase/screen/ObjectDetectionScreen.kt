@@ -61,7 +61,8 @@ fun ObjectDetectionContent(
 ) {
     var detectedObjects by remember { mutableStateOf(listOf<DetectedObject>()) }
     Column {
-        CameraView(modifier = modifier.weight(1f),
+        CameraView(
+            modifier = modifier.weight(1f),
             imageAnalyser = ObjectRecognitionAnalyser { detectedObjects = it })
         Column(
             modifier = modifier

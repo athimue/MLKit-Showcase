@@ -1,5 +1,7 @@
 package com.example.mlkit_showcase.screen
 
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -67,7 +69,10 @@ fun BarcodeScanningContent(
         modifier = modifier.scrollable(scrollState, orientation = Orientation.Vertical)
     ) {
         CameraView(modifier = modifier.weight(1f),
-            imageAnalyser = BarcodeScanningAnalyser { barcodes = it })
+            imageAnalyser = BarcodeScanningAnalyser {
+                barcodes = it
+            }
+        )
         Column(
             modifier = modifier
                 .weight(1f)

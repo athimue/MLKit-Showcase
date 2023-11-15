@@ -61,7 +61,8 @@ fun ImageLabelingContent(
 ) {
     var imageLabels by remember { mutableStateOf(listOf<ImageLabel>()) }
     Column {
-        CameraView(modifier = modifier.weight(1f),
+        CameraView(
+            modifier = modifier.weight(1f),
             imageAnalyser = ImageLabelingAnalyser { imageLabels = it })
         Column(
             modifier = modifier

@@ -21,6 +21,7 @@ fun HomeScreen(
     onImageLabelingClick: () -> Unit,
     onBarcodeScanningClick: () -> Unit,
     onFaceDetectionClick: () -> Unit,
+    onDigitalInkRecognitionClick: () -> Unit,
 ) {
     Column(
     ) {
@@ -88,6 +89,28 @@ fun HomeScreen(
                 onClick = onFaceDetectionClick
             ) {
                 Text("Face detection")
+            }
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = {}
+            ) {
+                Text("xxxxxx")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = onFaceDetectionClick
+            ) {
+                Text("Digital ink recognition")
             }
             Button(
                 modifier = Modifier

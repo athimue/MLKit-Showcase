@@ -60,7 +60,8 @@ fun TextRecognitionContent(
     Column(
         modifier = modifier.scrollable(scrollState, orientation = Orientation.Vertical)
     ) {
-        CameraView(modifier = modifier.weight(1f),
+        CameraView(
+            modifier = modifier.weight(1f),
             imageAnalyser = TextRecognitionAnalyser { textValue = it })
         Column(
             modifier = modifier

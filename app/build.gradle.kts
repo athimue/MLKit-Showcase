@@ -61,6 +61,8 @@ dependencies {
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
     // Face detection
     implementation("com.google.mlkit:face-detection:16.1.5")
+    // Digital Ink Recognition
+    implementation("com.google.mlkit:digital-ink-recognition:18.1.0")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"

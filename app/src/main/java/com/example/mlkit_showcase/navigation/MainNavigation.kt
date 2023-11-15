@@ -18,6 +18,7 @@ internal sealed class Screen(val route: String) {
     data object ImageLabeling : Screen("image_labeling")
     data object BarcodeScanning : Screen("barcode_scanning")
     data object FaceDetection : Screen("face_detection")
+    data object DigitalInkRecognition : Screen("digital_ink_recognition")
 }
 
 @Composable
@@ -31,6 +32,7 @@ fun MainNavigation() {
                 onImageLabelingClick = { navController.navigate(Screen.ImageLabeling.route) },
                 onBarcodeScanningClick = { navController.navigate(Screen.BarcodeScanning.route) },
                 onFaceDetectionClick = { navController.navigate(Screen.FaceDetection.route) },
+                onDigitalInkRecognitionClick = { navController.navigate(Screen.DigitalInkRecognition.route) },
             )
         }
         composable(Screen.TextRecognition.route) {
@@ -46,6 +48,9 @@ fun MainNavigation() {
             BarcodeScanningScreen(onBackClick = { navController.popBackStack() })
         }
         composable(Screen.FaceDetection.route) {
+            FaceDetectionScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.DigitalInkRecognition.route) {
             FaceDetectionScreen(onBackClick = { navController.popBackStack() })
         }
     }
