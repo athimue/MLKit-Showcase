@@ -10,6 +10,7 @@ import com.example.mlkit_showcase.screen.HomeScreen
 import com.example.mlkit_showcase.screen.ImageLabelingScreen
 import com.example.mlkit_showcase.screen.ObjectDetectionScreen
 import com.example.mlkit_showcase.screen.PoseDetectionScreen
+import com.example.mlkit_showcase.screen.SelfieSegmentationScreen
 import com.example.mlkit_showcase.screen.TextRecognitionScreen
 
 internal sealed class Screen(val route: String) {
@@ -21,6 +22,7 @@ internal sealed class Screen(val route: String) {
     data object FaceDetection : Screen("face_detection")
     data object DigitalInkRecognition : Screen("digital_ink_recognition")
     data object PoseDetection : Screen("pose_detection")
+    data object SelfieSegmentation : Screen("selfie_segmentation")
 }
 
 @Composable
@@ -35,7 +37,8 @@ fun MainNavigation() {
                 onBarcodeScanningClick = { navController.navigate(Screen.BarcodeScanning.route) },
                 onFaceDetectionClick = { navController.navigate(Screen.FaceDetection.route) },
                 onDigitalInkRecognitionClick = { navController.navigate(Screen.DigitalInkRecognition.route) },
-                onPoseDetectionClick = { navController.navigate(Screen.PoseDetection.route) }
+                onPoseDetectionClick = { navController.navigate(Screen.PoseDetection.route) },
+                onSelfieSegmentationClick = { navController.navigate(Screen.SelfieSegmentation.route) }
             )
         }
         composable(Screen.TextRecognition.route) {
@@ -58,6 +61,9 @@ fun MainNavigation() {
         }
         composable(Screen.PoseDetection.route) {
             PoseDetectionScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.SelfieSegmentation.route) {
+            SelfieSegmentationScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }

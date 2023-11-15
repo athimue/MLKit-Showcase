@@ -65,6 +65,8 @@ dependencies {
     implementation("com.google.mlkit:digital-ink-recognition:18.1.0")
     // Pose detection
     implementation("com.google.mlkit:pose-detection:18.0.0-beta3")
+    // Selfie segmentation
+    implementation("com.google.mlkit:segmentation-selfie:16.0.0-beta4")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"

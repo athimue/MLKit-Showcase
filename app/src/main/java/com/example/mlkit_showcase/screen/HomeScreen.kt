@@ -23,6 +23,7 @@ fun HomeScreen(
     onFaceDetectionClick: () -> Unit,
     onDigitalInkRecognitionClick: () -> Unit,
     onPoseDetectionClick: () -> Unit,
+    onSelfieSegmentationClick: () -> Unit,
 ) {
     Column(
     ) {
@@ -121,6 +122,28 @@ fun HomeScreen(
                 onClick = onPoseDetectionClick
             ) {
                 Text("Pose detection")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(5.dp),
+                shape = RectangleShape,
+                onClick = onSelfieSegmentationClick
+            ) {
+                Text("Selfie segmentation")
+            }
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                shape = RectangleShape,
+                onClick = { }
+            ) {
+                Text("Subject segmentation")
             }
         }
     }

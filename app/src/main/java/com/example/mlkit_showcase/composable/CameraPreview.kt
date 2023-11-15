@@ -39,7 +39,7 @@ fun CameraView(
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val cameraProvider = cameraProviderFuture.get()
     val executor = ContextCompat.getMainExecutor(context)
-    val cameraSelector = remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
+    val cameraSelector = remember { mutableStateOf(CameraSelector.DEFAULT_BACK_CAMERA) }
     val preview = remember { mutableStateOf<Preview?>(null) }
     val imageAnalysis = remember { mutableStateOf<ImageAnalysis?>(null) }
 
