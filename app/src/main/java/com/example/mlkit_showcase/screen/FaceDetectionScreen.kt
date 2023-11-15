@@ -30,6 +30,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.mlkit.vision.face.Face
+import java.math.RoundingMode
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -60,8 +61,7 @@ fun FaceDetectionContent(
 ) {
     var faces by remember { mutableStateOf(listOf<Face>()) }
     Column {
-        CameraView(
-            modifier = modifier.weight(1f),
+        CameraView(modifier = modifier.weight(1f),
             imageAnalyser = FaceDetectionAnalyser { faces = it })
         Column(
             modifier = modifier
@@ -88,8 +88,8 @@ fun FaceDetectionContent(
                                 .padding(top = 8.dp, start = 8.dp, end = 8.dp)
                         ) {
                             TableCell(text = "Index", weight = 0.2f)
-                            TableCell(text = "Smiling ?", weight = 0.5f)
-                            TableCell(text = "Eyes open ?", weight = 0.3f)
+                            TableCell(text = "Smiling ?", weight = 0.4f)
+                            TableCell(text = "Eyes open ?", weight = 0.4f)
                         }
                     }
                     items(items = faces) { face ->
@@ -100,13 +100,12 @@ fun FaceDetectionContent(
                         ) {
                             TableCell(text = face.trackingId.toString(), weight = 0.2f)
                             TableCell(
-                                text = String.format("%.2f", face.smilingProbability.toString()),
-                                weight = 0.5f
+                                text = face.smilingProbability?.toBigDecimal()
+                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.4f
                             )
                             TableCell(
-                                text = String.format(
-                                    "%.2f", face.rightEyeOpenProbability.toString()
-                                ), weight = 0.3f
+                                text = face.rightEyeOpenProbability?.toBigDecimal()
+                                    ?.setScale(1, RoundingMode.UP).toString(), weight = 0.4f
                             )
                         }
                     }
