@@ -32,21 +32,16 @@ import java.util.concurrent.Executors
 fun CameraView(
     modifier: Modifier,
     imageAnalyser: ImageAnalysis.Analyzer,
-    image: ImageProxy? = null,
-    rect: Rect? = null
+    onPreviewChanged: (PreviewView) -> Unit = {}
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    val cameraProviderFuture = remember {
-        ProcessCameraProvider.getInstance(context)
-    }
+    val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
     val cameraProvider = cameraProviderFuture.get()
     val executor = ContextCompat.getMainExecutor(context)
     val cameraSelector = remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
     val preview = remember { mutableStateOf<Preview?>(null) }
-    val previewView = remember { mutableStateOf<PreviewView?>(null) }
     val imageAnalysis = remember { mutableStateOf<ImageAnalysis?>(null) }
-    var composeRect: androidx.compose.ui.geometry.Rect
 
     Box(modifier = modifier) {
         AndroidView(factory = { ctx ->
@@ -57,7 +52,7 @@ fun CameraView(
                 implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 scaleType = PreviewView.ScaleType.FIT_CENTER
             }.also {
-                previewView.value = it
+                onPreviewChanged(it)
                 preview.value = Preview.Builder().build().also { preview ->
                     preview.setSurfaceProvider(it.surfaceProvider)
                 }
@@ -77,48 +72,9 @@ fun CameraView(
                 }, executor)
             }
         })
-        image?.let { img ->
-            rect?.let { points ->
-
-                val imageAspectRatio = img.width.toFloat() / img.height
-                val previewAspectRatio =
-                    previewView.value?.width?.toFloat()!! / previewView.value?.height?.toFloat()!!
-
-                val scale = if (imageAspectRatio < previewAspectRatio) {
-                    previewView.value?.height?.toFloat()!! / img.height
-                } else {
-                    previewView.value?.width?.toFloat()!! / img.width
-                }
-                val offsetX = 150
-
-                val transformedRect = Rect(
-                    (points.left * scale + offsetX).toInt(),
-                    (points.top * scale).toInt(),
-                    (points.right * scale + offsetX).toInt(),
-                    (points.bottom * scale).toInt()
-                )
-
-                composeRect = androidx.compose.ui.geometry.Rect(
-                    left = transformedRect.left.toFloat(),
-                    top = transformedRect.top.toFloat(),
-                    right = transformedRect.right.toFloat(),
-                    bottom = transformedRect.bottom.toFloat()
-                )
-
-                Canvas(modifier = Modifier.matchParentSize()) {
-                    drawRect(
-                        color = Color.Magenta,
-                        topLeft = composeRect.topLeft,
-                        size = composeRect.size,
-                        style = Stroke(width = 3f)
-                    )
-                }
-            }
-        }
-        FloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(12.dp),
+        FloatingActionButton(modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(12.dp),
             onClick = {
                 cameraSelector.value =
                     if (cameraSelector.value == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA else CameraSelector.DEFAULT_BACK_CAMERA

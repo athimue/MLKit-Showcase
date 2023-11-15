@@ -1,6 +1,11 @@
 package com.example.mlkit_showcase.screen
 
+import android.graphics.Rect
 import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
+import androidx.camera.view.PreviewView
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -61,17 +68,57 @@ fun FaceDetectionContent(
     modifier: Modifier = Modifier
 ) {
     var faces by remember { mutableStateOf(listOf<Face>()) }
-    val imageP = remember { mutableStateOf<ImageProxy?>(null) }
+    var imageP by remember { mutableStateOf<ImageProxy?>(null) }
+    var previewView by remember { mutableStateOf<PreviewView?>(null) }
     Column {
-        CameraView(
-            modifier = modifier.weight(0.6f),
-            imageAnalyser = FaceDetectionAnalyser { image, faceList ->
-                faces = faceList
-                imageP.value = image
-            },
-            image = imageP.value,
-            rect = faces.firstOrNull()?.boundingBox
-        )
+        Box(modifier = modifier.weight(0.6f)) {
+            CameraView(
+                modifier = modifier,
+                imageAnalyser = FaceDetectionAnalyser { image, faceList ->
+                    faces = faceList
+                    imageP = image
+                },
+                onPreviewChanged = { previewView = it }
+            )
+            imageP?.let { img ->
+                faces.firstOrNull()?.boundingBox?.let { points ->
+
+                    val imageAspectRatio = img.width.toFloat() / img.height
+                    val previewAspectRatio =
+                        previewView?.width?.toFloat()!! / previewView?.height?.toFloat()!!
+
+                    val scale = if (imageAspectRatio < previewAspectRatio) {
+                        previewView?.height?.toFloat()!! / img.height
+                    } else {
+                        previewView?.width?.toFloat()!! / img.width
+                    }
+                    val offsetX = 150
+
+                    val transformedRect = Rect(
+                        (points.left * scale + offsetX).toInt(),
+                        (points.top * scale).toInt(),
+                        (points.right * scale + offsetX).toInt(),
+                        (points.bottom * scale).toInt()
+                    )
+
+                    val composeRect = androidx.compose.ui.geometry.Rect(
+                        left = transformedRect.left.toFloat(),
+                        top = transformedRect.top.toFloat(),
+                        right = transformedRect.right.toFloat(),
+                        bottom = transformedRect.bottom.toFloat()
+                    )
+
+                    Canvas(modifier = Modifier.matchParentSize()) {
+                        drawRect(
+                            color = Color.Magenta,
+                            topLeft = composeRect.topLeft,
+                            size = composeRect.size,
+                            style = Stroke(width = 3f)
+                        )
+                    }
+                }
+            }
+        }
         Column(
             modifier = modifier
                 .weight(0.4f)

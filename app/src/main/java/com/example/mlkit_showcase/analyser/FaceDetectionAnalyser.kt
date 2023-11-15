@@ -15,9 +15,12 @@ class FaceDetectionAnalyser(
 ) : ImageAnalysis.Analyzer {
 
     private val realTimeOptions =
-        FaceDetectorOptions.Builder().setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
+        FaceDetectorOptions
+            .Builder()
+            .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
             .setContourMode(FaceDetectorOptions.CONTOUR_MODE_ALL)
-            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL).build()
+            .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+            .build()
 
     private val detector = FaceDetection.getClient(realTimeOptions)
 
