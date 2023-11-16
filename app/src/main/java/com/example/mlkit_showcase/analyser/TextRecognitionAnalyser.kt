@@ -20,9 +20,9 @@ class TextRecognitionAnalyser(
             val image = InputImage.fromMediaImage(it, imageProxy.imageInfo.rotationDegrees)
 
             textRecognizer.process(image).addOnSuccessListener { text ->
-                    onTextDetected(text.text)
-                    imageProxy.close()
-                }
+                onTextDetected(text.text)
+                imageProxy.close()
+            }
         }
     }
 }

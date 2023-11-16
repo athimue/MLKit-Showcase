@@ -1,15 +1,11 @@
 package com.example.mlkit_showcase.screen
 
 import android.graphics.Bitmap
-import androidx.camera.core.ImageProxy
-import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,18 +19,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.example.mlkit_showcase.analyser.FaceDetectionAnalyser
 import com.example.mlkit_showcase.analyser.SelfieSegmentationAnalyser
 import com.example.mlkit_showcase.composable.CameraView
 import com.example.mlkit_showcase.composable.NoPermissionContent
-import com.example.mlkit_showcase.navigation.Screen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.mlkit.vision.face.Face
 import com.google.mlkit.vision.segmentation.SegmentationMask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -94,7 +86,8 @@ fun DrawSegmentationMask(mask: SegmentationMask) {
 
             for (y in 0 until mask.height) {
                 for (x in 0 until mask.width) {
-                    val pixelValue = if (mask.buffer.get().toInt() == 1) Color.White else Color.Transparent
+                    val pixelValue =
+                        if (mask.buffer.get().toInt() == 1) Color.White else Color.Transparent
                     bitmap.setPixel(x, y, pixelValue.toArgb())
                 }
             }
