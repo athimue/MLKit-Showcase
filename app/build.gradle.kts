@@ -61,6 +61,8 @@ dependencies {
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
     // Face detection
     implementation("com.google.mlkit:face-detection:16.1.5")
+    // Face mesh detection
+    implementation("com.google.mlkit:face-mesh-detection:16.0.0-beta1")
     // Digital Ink Recognition
     implementation("com.google.mlkit:digital-ink-recognition:18.1.0")
     // Pose detection

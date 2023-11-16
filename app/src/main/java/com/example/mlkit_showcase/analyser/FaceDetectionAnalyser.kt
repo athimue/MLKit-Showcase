@@ -11,7 +11,7 @@ import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
 
 class FaceDetectionAnalyser(
-    private val onDetection: (ImageProxy, List<Face>) -> Unit
+    private val onDetection: (List<Face>) -> Unit
 ) : ImageAnalysis.Analyzer {
 
     private val realTimeOptions =
@@ -30,7 +30,7 @@ class FaceDetectionAnalyser(
             val image = InputImage.fromMediaImage(it, imageProxy.imageInfo.rotationDegrees)
 
             detector.process(image).addOnSuccessListener { faces ->
-                onDetection(imageProxy, faces)
+                onDetection(faces)
                 imageProxy.close()
             }
         }

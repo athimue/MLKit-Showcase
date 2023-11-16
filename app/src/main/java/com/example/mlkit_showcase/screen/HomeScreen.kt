@@ -24,6 +24,7 @@ fun HomeScreen(
     onImageLabelingClick: () -> Unit,
     onBarcodeScanningClick: () -> Unit,
     onFaceDetectionClick: () -> Unit,
+    onFaceMeshDetectionClick: () -> Unit,
     onDigitalInkRecognitionClick: () -> Unit,
     onPoseDetectionClick: () -> Unit,
     onSelfieSegmentationClick: () -> Unit,
@@ -105,11 +106,13 @@ fun HomeScreen(
             ) {
                 Text("Face detection")
             }
-            Button(modifier = Modifier
-                .weight(1f)
-                .padding(10.dp),
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
                 shape = RectangleShape,
-                onClick = {}) {
+                onClick = onFaceMeshDetectionClick
+            ) {
                 Text("Face mesh detection")
             }
         }

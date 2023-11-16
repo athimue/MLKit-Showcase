@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mlkit_showcase.screen.BarcodeScanningScreen
 import com.example.mlkit_showcase.screen.FaceDetectionScreen
+import com.example.mlkit_showcase.screen.FaceMeshDetectionScreen
 import com.example.mlkit_showcase.screen.HomeScreen
 import com.example.mlkit_showcase.screen.ImageLabelingScreen
 import com.example.mlkit_showcase.screen.ObjectDetectionScreen
@@ -20,6 +21,7 @@ internal sealed class Screen(val route: String) {
     data object ImageLabeling : Screen("image_labeling")
     data object BarcodeScanning : Screen("barcode_scanning")
     data object FaceDetection : Screen("face_detection")
+    data object FaceMeshDetection : Screen("face_mesh_detection")
     data object DigitalInkRecognition : Screen("digital_ink_recognition")
     data object PoseDetection : Screen("pose_detection")
     data object SelfieSegmentation : Screen("selfie_segmentation")
@@ -36,6 +38,7 @@ fun MainNavigation() {
                 onImageLabelingClick = { navController.navigate(Screen.ImageLabeling.route) },
                 onBarcodeScanningClick = { navController.navigate(Screen.BarcodeScanning.route) },
                 onFaceDetectionClick = { navController.navigate(Screen.FaceDetection.route) },
+                onFaceMeshDetectionClick = { navController.navigate(Screen.FaceMeshDetection.route) },
                 onDigitalInkRecognitionClick = { navController.navigate(Screen.DigitalInkRecognition.route) },
                 onPoseDetectionClick = { navController.navigate(Screen.PoseDetection.route) },
                 onSelfieSegmentationClick = { navController.navigate(Screen.SelfieSegmentation.route) }
@@ -55,6 +58,9 @@ fun MainNavigation() {
         }
         composable(Screen.FaceDetection.route) {
             FaceDetectionScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.FaceMeshDetection.route) {
+            FaceMeshDetectionScreen(onBackClick = { navController.popBackStack() })
         }
         composable(Screen.DigitalInkRecognition.route) {
             FaceDetectionScreen(onBackClick = { navController.popBackStack() })

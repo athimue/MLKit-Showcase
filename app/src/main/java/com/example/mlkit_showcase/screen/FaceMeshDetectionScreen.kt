@@ -1,6 +1,6 @@
 package com.example.mlkit_showcase.screen
 
-import androidx.camera.core.ImageProxy
+import android.util.Log
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
@@ -16,20 +16,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.mlkit_showcase.analyser.FaceDetectionAnalyser
+import com.example.mlkit_showcase.analyser.FaceMeshDetectionAnalyser
 import com.example.mlkit_showcase.composable.CameraView
 import com.example.mlkit_showcase.composable.NoPermissionContent
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.mlkit.vision.face.Face
+import com.google.mlkit.vision.facemesh.FaceMesh
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun FaceDetectionScreen(
+fun FaceMeshDetectionScreen(
     onBackClick: () -> Unit
 ) {
     val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
@@ -38,7 +39,7 @@ fun FaceDetectionScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         if (cameraPermissionState.status.isGranted) {
-            FaceDetectionContent(onBackClick = onBackClick)
+            FaceMeshDetectionContent(onBackClick = onBackClick)
         } else {
             NoPermissionContent(onPermissionClick = { cameraPermissionState.launchPermissionRequest() })
         }
@@ -46,44 +47,43 @@ fun FaceDetectionScreen(
 }
 
 @Composable
-fun FaceDetectionContent(
+fun FaceMeshDetectionContent(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
 ) {
-    var faces by remember { mutableStateOf(listOf<Face>()) }
+    var faceMeshes by remember { mutableStateOf(listOf<FaceMesh>()) }
     var previewView by remember { mutableStateOf<PreviewView?>(null) }
     Column {
         Box(modifier = modifier.weight(0.6f)) {
-            CameraView(modifier = modifier,
-                imageAnalyser = FaceDetectionAnalyser {
-                    faces = it
-                },
-                onPreviewChanged = { previewView = it })
-
-            faces.firstOrNull()?.boundingBox?.let { points ->
-                val composeRect = androidx.compose.ui.geometry.Rect(
-                    left = points.left.toFloat(),
-                    top = points.top.toFloat(),
-                    right = points.right.toFloat(),
-                    bottom = points.bottom.toFloat()
-                )
-
-                Canvas(modifier = Modifier.matchParentSize()) {
-                    drawRect(
-                        color = Color.Magenta,
-                        topLeft = composeRect.topLeft,
-                        size = composeRect.size,
-                        style = Stroke(width = 3f)
-                    )
+            CameraView(modifier = modifier, imageAnalyser = FaceMeshDetectionAnalyser(
+                onDetection = {
+                    faceMeshes = it
                 }
-            }
+            ), onPreviewChanged = { previewView = it })
+            FaceMeshOverlay(faceMeshes = faceMeshes)
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .padding(12.dp),
-                onClick = onBackClick
+                    .padding(12.dp), onClick = onBackClick
             ) {
                 Text("Back")
+            }
+        }
+    }
+}
+
+@Composable
+fun FaceMeshOverlay(faceMeshes: List<FaceMesh>) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        faceMeshes.forEach { faceMesh ->
+            val points = faceMesh.allPoints
+            points.forEach { point ->
+                val position = point.position
+                drawCircle(
+                    color = Color.Magenta,
+                    radius = 2f,
+                    center = Offset(position.x, position.y)
+                )
             }
         }
     }
