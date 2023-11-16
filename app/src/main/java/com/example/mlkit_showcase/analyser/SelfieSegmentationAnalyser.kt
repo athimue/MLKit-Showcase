@@ -15,7 +15,6 @@ class SelfieSegmentationAnalyser(
 
     private val realTimeOptions = SelfieSegmenterOptions.Builder()
         .setDetectorMode(SelfieSegmenterOptions.STREAM_MODE)
-        .enableRawSizeMask()
         .build()
 
     private val detector = Segmentation.getClient(realTimeOptions)

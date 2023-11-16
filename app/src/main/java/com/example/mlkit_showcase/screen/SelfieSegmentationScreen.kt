@@ -61,7 +61,7 @@ fun SelfieSegmentationContent(
                     segmentationMask = it
                 })
             segmentationMask?.let {
-                DrawSegmentationMask(it)
+                SegmentationMaskOverlay(it)
             }
             FloatingActionButton(
                 modifier = Modifier
@@ -76,29 +76,24 @@ fun SelfieSegmentationContent(
 }
 
 @Composable
-fun DrawSegmentationMask(mask: SegmentationMask) {
-    val imageBitmap = remember { mutableStateOf<ImageBitmap?>(null) }
-
-    LaunchedEffect(mask) {
-        withContext(Dispatchers.IO) {
-            val bitmap = Bitmap.createBitmap(mask.width, mask.height, Bitmap.Config.ARGB_8888)
-            mask.buffer.rewind()
-
-            for (y in 0 until mask.height) {
-                for (x in 0 until mask.width) {
-                    val pixelValue =
-                        if (mask.buffer.get().toInt() == 1) Color.White else Color.Transparent
-                    bitmap.setPixel(x, y, pixelValue.toArgb())
-                }
-            }
-
-            imageBitmap.value = bitmap.asImageBitmap()
-        }
-    }
-
-    imageBitmap.value?.let {
-        Image(bitmap = it, contentDescription = "Segmentation Mask")
-    }
+fun SegmentationMaskOverlay(segmentationMask: SegmentationMask) {
+    val maskBitmap = remember(segmentationMask) { segmentationMask.toBitmap() }
+    Image(bitmap = maskBitmap.asImageBitmap(), contentDescription = null)
 }
 
-
+fun SegmentationMask.toBitmap(): Bitmap {
+    val maskBuffer = this.buffer
+    val maskWidth = this.width
+    val maskHeight = this.height
+    val bitmap = Bitmap.createBitmap(maskWidth, maskHeight, Bitmap.Config.ARGB_8888)
+    for (y in 0 until maskHeight) {
+        for (x in 0 until maskWidth) {
+            val foregroundConfidence = maskBuffer.float
+            val pixelValue = (foregroundConfidence * 255).toInt()
+            val color =
+                Color(red = pixelValue, green = pixelValue, blue = pixelValue, alpha = 255).toArgb()
+            bitmap.setPixel(x, y, color)
+        }
+    }
+    return bitmap
+}
