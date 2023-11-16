@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +28,9 @@ fun HomeScreen(
     onPoseDetectionClick: () -> Unit,
     onSelfieSegmentationClick: () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     Column(
+        modifier = Modifier.verticalScroll(scrollState)
     ) {
         Text(
             text = "ML KIT SHOWCASE",
@@ -34,6 +39,14 @@ fun HomeScreen(
                 .padding(20.dp),
             textAlign = TextAlign.Center,
             fontSize = 25.sp,
+            fontWeight = FontWeight.ExtraBold
+        )
+        Text(
+            text = "Vision APIs",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
         Row(
@@ -42,7 +55,7 @@ fun HomeScreen(
             Button(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(10.dp),
+                    .padding(vertical = 10.dp, horizontal = 5.dp),
                 shape = RectangleShape,
                 onClick = onTextRecognitionClick
             ) {
@@ -92,13 +105,11 @@ fun HomeScreen(
             ) {
                 Text("Face detection")
             }
-            Button(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(10.dp),
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
                 shape = RectangleShape,
-                onClick = {}
-            ) {
+                onClick = {}) {
                 Text("Face mesh detection")
             }
         }
@@ -136,14 +147,56 @@ fun HomeScreen(
             ) {
                 Text("Selfie segmentation")
             }
-            Button(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(10.dp),
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
                 shape = RectangleShape,
-                onClick = { }
-            ) {
+                onClick = { }) {
                 Text("Subject segmentation")
+            }
+        }
+        Text(
+            text = "Natural language APIs",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(5.dp),
+                shape = RectangleShape,
+                onClick = { }) {
+                Text("Language identification")
+            }
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
+                shape = RectangleShape,
+                onClick = { }) {
+                Text("Translation")
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(5.dp),
+                shape = RectangleShape,
+                onClick = { }) {
+                Text("Smart reply")
+            }
+            Button(modifier = Modifier
+                .weight(1f)
+                .padding(10.dp),
+                shape = RectangleShape,
+                onClick = { }) {
+                Text("Entity extraction")
             }
         }
     }
