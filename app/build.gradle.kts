@@ -69,6 +69,8 @@ dependencies {
     implementation("com.google.mlkit:pose-detection:18.0.0-beta3")
     // Selfie segmentation
     implementation("com.google.mlkit:segmentation-selfie:16.0.0-beta4")
+    // Subject segmentation
+    implementation("com.google.android.gms:play-services-mlkit-subject-segmentation:16.0.0-beta1")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"

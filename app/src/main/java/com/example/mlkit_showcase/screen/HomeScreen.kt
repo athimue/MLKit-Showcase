@@ -28,6 +28,7 @@ fun HomeScreen(
     onDigitalInkRecognitionClick: () -> Unit,
     onPoseDetectionClick: () -> Unit,
     onSelfieSegmentationClick: () -> Unit,
+    onSubjectSegmentationClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -150,11 +151,13 @@ fun HomeScreen(
             ) {
                 Text("Selfie segmentation")
             }
-            Button(modifier = Modifier
-                .weight(1f)
-                .padding(10.dp),
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(10.dp),
                 shape = RectangleShape,
-                onClick = { }) {
+                onClick = onSubjectSegmentationClick
+            ) {
                 Text("Subject segmentation")
             }
         }
