@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mlkit_showcase.screen.BarcodeScanningScreen
+import com.example.mlkit_showcase.screen.DigitalInkRecognitionScreen
 import com.example.mlkit_showcase.screen.FaceDetectionScreen
 import com.example.mlkit_showcase.screen.FaceMeshDetectionScreen
 import com.example.mlkit_showcase.screen.HomeScreen
@@ -66,7 +67,7 @@ fun MainNavigation() {
             FaceMeshDetectionScreen(onBackClick = { navController.popBackStack() })
         }
         composable(Screen.DigitalInkRecognition.route) {
-            FaceDetectionScreen(onBackClick = { navController.popBackStack() })
+            DigitalInkRecognitionScreen(onBackClick = { navController.popBackStack() })
         }
         composable(Screen.PoseDetection.route) {
             PoseDetectionScreen(onBackClick = { navController.popBackStack() })
