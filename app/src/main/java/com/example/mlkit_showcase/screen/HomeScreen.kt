@@ -29,6 +29,7 @@ fun HomeScreen(
     onPoseDetectionClick: () -> Unit,
     onSelfieSegmentationClick: () -> Unit,
     onSubjectSegmentationClick: () -> Unit,
+    onLanguageIdentificationClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -172,11 +173,13 @@ fun HomeScreen(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(modifier = Modifier
-                .weight(1f)
-                .padding(5.dp),
+            Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(5.dp),
                 shape = RectangleShape,
-                onClick = { }) {
+                onClick = onLanguageIdentificationClick
+            ) {
                 Text("Language identification")
             }
             Button(modifier = Modifier

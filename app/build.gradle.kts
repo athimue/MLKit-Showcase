@@ -71,6 +71,8 @@ dependencies {
     implementation("com.google.mlkit:segmentation-selfie:16.0.0-beta4")
     // Subject segmentation
     implementation("com.google.android.gms:play-services-mlkit-subject-segmentation:16.0.0-beta1")
+    // Language identification
+    implementation("com.google.mlkit:language-id:17.0.4")
 
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.4.0-alpha02"

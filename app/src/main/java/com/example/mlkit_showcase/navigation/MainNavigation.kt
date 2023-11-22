@@ -10,6 +10,7 @@ import com.example.mlkit_showcase.screen.FaceDetectionScreen
 import com.example.mlkit_showcase.screen.FaceMeshDetectionScreen
 import com.example.mlkit_showcase.screen.HomeScreen
 import com.example.mlkit_showcase.screen.ImageLabelingScreen
+import com.example.mlkit_showcase.screen.LanguageIdentificationScreen
 import com.example.mlkit_showcase.screen.ObjectDetectionScreen
 import com.example.mlkit_showcase.screen.PoseDetectionScreen
 import com.example.mlkit_showcase.screen.SelfieSegmentationScreen
@@ -28,6 +29,7 @@ internal sealed class Screen(val route: String) {
     data object PoseDetection : Screen("pose_detection")
     data object SelfieSegmentation : Screen("selfie_segmentation")
     data object SubjectSegmentation : Screen("subject_segmentation")
+    data object LanguageIdentification : Screen("language_identification")
 }
 
 @Composable
@@ -46,6 +48,7 @@ fun MainNavigation() {
                 onPoseDetectionClick = { navController.navigate(Screen.PoseDetection.route) },
                 onSelfieSegmentationClick = { navController.navigate(Screen.SelfieSegmentation.route) },
                 onSubjectSegmentationClick = { navController.navigate(Screen.SubjectSegmentation.route) },
+                onLanguageIdentificationClick = { navController.navigate(Screen.LanguageIdentification.route) },
             )
         }
         composable(Screen.TextRecognition.route) {
@@ -77,6 +80,9 @@ fun MainNavigation() {
         }
         composable(Screen.SubjectSegmentation.route) {
             SubjectSegmentationScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.LanguageIdentification.route) {
+            LanguageIdentificationScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }
